@@ -51,7 +51,6 @@ public class RackResponsePropagator {
     return !header.getKey().startsWith(RACK_INTERNAL_HEADER_PREFIX);
   }
 
-  // TODO(matthewtodd): think more carefully through exception handling.
   private void propagateBody(RackResponse rackResponse, HttpServletResponse response) {
     ServletOutputStream outputStream = null;
 

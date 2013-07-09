@@ -22,8 +22,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Sends rack.error messages to the given logger.
  */
-// TODO(matthewtodd): perhaps remove our (direct) dependency on square Logger.
-// Delegate to a RackLogger? Then implement that as SquareRackLogger?
 public class RackErrors {
   private final Logger logger;
   private final StringBuffer buffer;

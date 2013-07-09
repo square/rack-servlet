@@ -47,9 +47,8 @@ public class JRubyRackInput extends RubyObject {
     }
   };
 
-  // TODO(mattwilson, matthewtodd): How synchronized do we need to be?
-  private static synchronized RubyClass getRackInputClass(Ruby runtime) {
-    RubyModule module = runtime.getOrCreateModule("Minecart");
+  private static RubyClass getRackInputClass(Ruby runtime) {
+    RubyModule module = runtime.getOrCreateModule("RackServlet");
     RubyClass klass = module.getClass("RackInput");
     if (klass == null) {
       klass = module.defineClassUnder("RackInput", runtime.getObject(), ALLOCATOR);
@@ -87,7 +86,6 @@ public class JRubyRackInput extends RubyObject {
     return nil;
   }
 
-  // TODO(matthewtodd): we don't yet support writing into a given buffer
   @JRubyMethod(optional = 1)
   public IRubyObject read(ThreadContext context, IRubyObject[] args) {
     Integer length = null;
