@@ -44,12 +44,14 @@ import static com.squareup.rack.RackEnvironment.SERVER_PORT;
  *
  * @see <a href="http://rack.rubyforge.org/doc/SPEC.html">The Rack Specification</a>
  * @see <a href="https://tools.ietf.org/html/rfc3875#section-4.1.18">RFC 3875, section 4.1.18</a>
- * @see <a href="http://blog.phusion.nl/2013/01/23/the-new-rack-socket-hijacking-api/">The Rack socket hijacking API</a>
+ * @see <a href="http://blog.phusion.nl/2013/01/23/the-new-rack-socket-hijacking-api/">The Rack
+ * socket hijacking API</a>
  */
 public class RackEnvironmentBuilder {
   // We conform to version 1.2 of the Rack specification.
   // Note that this number is completely different than the gem version of rack (lowercase):
-  // for example, the rack-1.5.2 gem ships with handlers that conform to version 1.2 of the Rack specification.
+  // for example, the rack-1.5.2 gem ships with handlers that conform to version 1.2 of the Rack
+  // specification.
   private static final List<Integer> VERSION_1_2 = ImmutableList.of(1, 2);
 
   private static final Logger RACK_ERRORS_LOGGER = LoggerFactory.getLogger(RackErrors.class);

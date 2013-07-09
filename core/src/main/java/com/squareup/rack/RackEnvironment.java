@@ -26,7 +26,7 @@ public class RackEnvironment extends ForwardingMap<String, Object> {
   public static final String RACK_HIJACK = "rack.hijack?";
   public static final String MINECART_HTTP_SERVLET_REQUEST = "minecart.http_servlet_request";
 
-  private final Map<String,Object> delegate;
+  private final Map<String, Object> delegate;
 
   public RackEnvironment(Map<String, Object> contents) {
     this.delegate = contents;

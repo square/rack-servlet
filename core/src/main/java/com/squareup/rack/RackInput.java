@@ -12,7 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Adapts an InputStream to the required interface for rack.input.
  *
- * Speaks byte[], not String, because Java doesn't support the equivalent of Ruby strings with ASCII-8BIT encoding.
+ * Speaks byte[], not String, because Java doesn't support the equivalent of Ruby strings with
+ * ASCII-8BIT encoding.
  *
  * We later further adapt this class to speak Ruby inside JRubyRackApplication.
  */
@@ -26,14 +27,16 @@ public class RackInput implements Closeable {
 
   public RackInput(InputStream inputStream) throws IOException {
     checkNotNull(inputStream);
-    checkArgument(inputStream.markSupported(), "rack.input must be rewindable, but inputStream doesn't support mark.");
+    checkArgument(inputStream.markSupported(),
+        "rack.input must be rewindable, but inputStream doesn't support mark.");
+
     stream = inputStream;
     stream.mark(READ_AHEAD_SUGGESTION);
   }
 
   /**
-   * Override this if you want to allow for really really really long lines to be returned by
-   * {@link com.squareup.rack.RackInput#gets()}.
+   * Override this if you want to allow for really really really long lines to be returned by {@link
+   * com.squareup.rack.RackInput#gets()}.
    */
   protected int getMaxLineLength() {
     return READ_AHEAD_SUGGESTION;

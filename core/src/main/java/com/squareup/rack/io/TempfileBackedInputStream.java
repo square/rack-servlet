@@ -13,7 +13,8 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * Makes an InputStream effectively infinitely-rewindable by buffering first in memory, then to disk.
+ * Makes an InputStream effectively infinitely-rewindable by buffering first in memory,
+ * then to disk.
  *
  * The tempfile buffer is written to java's default tmpdir, which you can choose by specifying
  * the -Djava.io.tmpdir=VALUE option when starting java.
@@ -38,7 +39,6 @@ public class TempfileBackedInputStream extends InputStream {
     this.buffer = new MemoryBuffer(threshold);
   }
 
-  // TODO(matthewtodd): we either want internal buffering here, or to rewrite RackInput to call read(byte[]).
   @Override public int read() throws IOException {
     byte[] bytes = new byte[1];
     int read = read(bytes);
