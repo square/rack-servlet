@@ -25,21 +25,29 @@ import org.jruby.runtime.builtin.IRubyObject;
 /**
  * Adapts a (RubyObject) enumerable into Java-space.
  */
-// TODO(matthewtodd): if the underlying body responds to close, we should close it after iteration.
-class JRubyRackBodyIterator extends AbstractIterator<byte[]> {
+public class JRubyRackBodyIterator extends AbstractIterator<byte[]> {
+  private final IRubyObject body;
   private final ThreadContext threadContext;
   private final RubyEnumerator enumerator;
 
-  JRubyRackBodyIterator(IRubyObject body) {
-    threadContext = body.getRuntime().getThreadService().getCurrentContext();
-    enumerator = (RubyEnumerator) body.callMethod(threadContext, "to_enum");
+  public JRubyRackBodyIterator(IRubyObject body) {
+    this.body = body;
+    this.threadContext = body.getRuntime().getThreadService().getCurrentContext();
+    this.enumerator = (RubyEnumerator) body.callMethod(threadContext, "to_enum");
   }
 
   @Override protected byte[] computeNext() {
     try {
       return ((RubyString) enumerator.callMethod(threadContext, "next")).getBytes();
     } catch (RaiseException e) {
+      close();
       return endOfData();
+    }
+  }
+
+  private void close() {
+    if (body.respondsTo("close")) {
+      body.callMethod(threadContext, "close");
     }
   }
 }
