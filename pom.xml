@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.squareup.rack</groupId>
-  <artifactId>rack-parent</artifactId>
+  <artifactId>rack-servlet-parent</artifactId>
   <packaging>pom</packaging>
   <version>HEAD-SNAPSHOT</version>
-  <name>Rack (Parent)</name>
+  <name>Rack Servlet (Parent)</name>
   <description>A JRuby servlet for Rack applications.</description>
 
   <modules>

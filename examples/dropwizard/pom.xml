@@ -3,13 +3,13 @@
 
   <parent>
     <groupId>com.squareup.rack</groupId>
-    <artifactId>rack-parent</artifactId>
+    <artifactId>rack-servlet-parent</artifactId>
     <version>HEAD-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>rack-dropwizard-example</artifactId>
-  <name>Rack Dropwizard Example</name>
+  <artifactId>rack-servlet-example-dropwizard</artifactId>
+  <name>Rack Servlet Example: Dropwizard</name>
 
   <properties>
     <dropwizard.version>0.6.2</dropwizard.version>
@@ -49,7 +49,7 @@
 
     <dependency>
       <groupId>com.squareup.rack</groupId>
-      <artifactId>rack</artifactId>
+      <artifactId>rack-servlet</artifactId>
       <version>HEAD-SNAPSHOT</version>
     </dependency>
     <dependency>

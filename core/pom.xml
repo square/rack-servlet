@@ -3,13 +3,13 @@
 
   <parent>
     <groupId>com.squareup.rack</groupId>
-    <artifactId>rack-parent</artifactId>
+    <artifactId>rack-servlet-parent</artifactId>
     <version>HEAD-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>rack</artifactId>
-  <name>Rack</name>
+  <artifactId>rack-servlet</artifactId>
+  <name>Rack Servlet</name>
 
   <dependencies>
     <dependency>
