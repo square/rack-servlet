@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.squareup.rack</groupId>
+  <artifactId>rack-parent</artifactId>
+  <packaging>pom</packaging>
+  <version>HEAD-SNAPSHOT</version>
+  <name>Rack (Parent)</name>
+  <description>A JRuby servlet for Rack applications.</description>
+
+  <modules>
+    <module>core</module>
+    <module>examples/dropwizard</module>
+  </modules>
+
+  <properties>
+    <!-- Main Dependencies -->
+    <findbugs.version>1.3.9</findbugs.version>
+    <guava.version>14.0</guava.version>
+    <javax.inject.version>1</javax.inject.version>
+    <javax.servlet.version>2.5</javax.servlet.version>
+    <jruby.version>1.7.4</jruby.version>
+    <slf4j.version>1.7.5</slf4j.version>
+
+    <!-- Test Dependencies -->
+    <junit.version>4.10</junit.version>
+    <fest.version>2.0M10</fest.version>
+    <mockito.version>1.9.5</mockito.version>
+  </properties>
+
+  <organization>
+    <name>Square, Inc.</name>
+    <url>http://squareup.com</url>
+  </organization>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.google.code.findbugs</groupId>
+        <artifactId>jsr305</artifactId>
+        <version>${findbugs.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.inject</groupId>
+        <artifactId>javax.inject</artifactId>
+        <version>${javax.inject.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>javax.servlet</groupId>
+        <artifactId>servlet-api</artifactId>
+        <version>${javax.servlet.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.easytesting</groupId>
+        <artifactId>fest-assert-core</artifactId>
+        <version>${fest.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.jruby</groupId>
+        <artifactId>jruby-complete</artifactId>
+        <version>${jruby.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

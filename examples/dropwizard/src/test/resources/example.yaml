@@ -1,0 +1,14 @@
+---
+http:
+  # pick any available ports
+  port: 0
+  adminPort: 0
+
+  # don't log requests to stdout
+  requestLog:
+    console:
+      enabled: false
+
+# quieten the logs
+logging:
+  level: WARN
