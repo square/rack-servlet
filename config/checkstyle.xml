@@ -8,6 +8,11 @@
     <module name="FileLength"/>
     <module name="FileTabCharacter"/>
 
+    <module name="Header">
+        <property name="headerFile" value="config/java.header"/>
+        <property name="fileExtensions" value="java"/>
+    </module>
+
     <!-- Trailing spaces -->
     <module name="RegexpSingleline">
         <property name="format" value="\s+$"/>

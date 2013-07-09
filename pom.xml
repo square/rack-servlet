@@ -28,6 +28,13 @@
     <mockito.version>1.9.5</mockito.version>
   </properties>
 
+  <licenses>
+    <license>
+      <name>Apache 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
   <organization>
     <name>Square, Inc.</name>
     <url>http://squareup.com</url>
@@ -87,7 +94,7 @@
         <configuration>
           <failsOnError>true</failsOnError>
           <consoleOutput>true</consoleOutput>
-          <configLocation>checkstyle.xml</configLocation>
+          <configLocation>config/checkstyle.xml</configLocation>
         </configuration>
         <executions>
           <execution>
