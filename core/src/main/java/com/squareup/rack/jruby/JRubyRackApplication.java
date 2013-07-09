@@ -1,9 +1,9 @@
 package com.squareup.rack.jruby;
 
 import com.squareup.rack.RackApplication;
+import com.squareup.rack.RackEnvironment;
 import com.squareup.rack.RackInput;
 import com.squareup.rack.RackResponse;
-import com.squareup.rack.RackEnvironment;
 import java.util.List;
 import java.util.Map;
 import org.jruby.Ruby;

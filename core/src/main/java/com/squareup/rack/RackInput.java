@@ -5,7 +5,6 @@ import com.squareup.rack.io.ByteArrayBuffer;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -44,7 +43,7 @@ public class RackInput implements Closeable {
     return readToLinefeed();
   }
 
-  public byte[] read(@Nullable Integer length) throws IOException {
+  public byte[] read(Integer length) throws IOException {
     if (length == null) {
       return readToEof();
     } else {
