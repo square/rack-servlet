@@ -1,7 +1,7 @@
 Dropwizard Example
 ==================
 
-Wires a simple [Sinatra][sinatra] application into a [Dropwizard][dropwizard]
+Wires a small [Sinatra][sinatra] application into a [Dropwizard][dropwizard]
 service.
 
 [dropwizard]: http://dropwizard.codahale.com/
