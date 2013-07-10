@@ -8,14 +8,20 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <artifactId>rack-servlet-example-jetty</artifactId>
-  <name>Rack Servlet Example: Jetty</name>
+  <artifactId>rack-servlet-example-guice-servlet</artifactId>
+  <name>Rack Servlet Example: Guice Servlet</name>
 
   <properties>
+    <guice.version>3.0</guice.version>
     <jetty.version>9.0.4.v20130625</jetty.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>com.google.inject.extensions</groupId>
+      <artifactId>guice-servlet</artifactId>
+      <version>${guice.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.squareup.rack</groupId>
       <artifactId>rack-servlet</artifactId>
