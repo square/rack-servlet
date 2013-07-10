@@ -1,18 +1,14 @@
 Contributing
 ============
 
-If you would like to contribute code to Rack Servlet you can do so through
-GitHub by forking the repository and sending a pull request.
+If you would like to contribute code to Rack Servlet, please [fork the
+repository][github-fork] on GitHub and send a pull request.
 
-When submitting code, please make every effort to follow existing conventions
-and style in order to keep the code as readable as possible.
-
-Where appropriate, please provide unit tests or integration tests. Unit tests
-should be JUnit based tests and can use either standard JUnit assertions or
-FEST assertions and be added to `<project>/src/test/java`.
+Please provide tests to demonstrate your feature. Tests should be JUnit-based
+and use [FEST assertions][fest-assertions].
 
 Please make sure your code compiles by running `mvn clean verify`.
-Additionally, consider using [Travis-CI] to validate your branches
+Additionally, consider using [Travis-CI][travis-ci] to validate your branches
 before you even put them into pull requests.  All pull requests will be
 validated by Travis-CI and must pass before being merged.
 
@@ -21,12 +17,13 @@ please ensure that the form is consistent with the existing files, and please
 note that a Square, Inc. copyright line must appear in every copyright notice.
 All files are released with the Apache 2.0 license.
 
-Checkstyle failures during compilation indicate errors in your style and will
-be displayed in the console output of the build (including in Travis-CI output),
-or can be viewed in the `checkstyle-result.xml` file.
+Contributor License Agreement
+-----------------------------
 
 Before your code can be accepted into the project you must sign the
-[Individual Contributor License Agreement (CLA)][CLA].
+[Individual Contributor License Agreement (CLA)][cla].
 
-[Travis-CI]: http://travis-ci.org
-[CLA]: https://spreadsheets.google.com/spreadsheet/viewform?formkey=dDViT2xzUHAwRkI3X3k5Z0lQM091OGc6MQ&ndplr=1
+[cla]: https://spreadsheets.google.com/spreadsheet/viewform?formkey=dDViT2xzUHAwRkI3X3k5Z0lQM091OGc6MQ&ndplr=1
+[fest-assertions]: https://code.google.com/p/fest/
+[github-fork]: https://github.com/square/rack-servlet/fork
+[travis-ci]: http://travis-ci.org/
