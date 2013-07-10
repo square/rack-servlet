@@ -25,22 +25,26 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Adapts an InputStream to the required interface for rack.input.
+ * <p>Adapts an {@link InputStream} to the required interface for {@code rack.input}.</p>
  *
- * Speaks byte[], not String, because Java doesn't support the equivalent of Ruby strings with
- * ASCII-8BIT encoding.
- *
- * We later further adapt this class to speak Ruby inside JRubyRackApplication.
+ * <p>Speaks {@code byte[]}, not {@code String}, because {@code rack.input} is required to have
+ * binary encoding.</p>
  */
 public class RackInput implements Closeable {
-  private static final int READ_AHEAD_SUGGESTION = 1024 * 1024;
   private static final int LINEFEED = 0xA;
+  private static final int MAX_LINE_LENGTH = 1024 * 1024;
+  private static final int READ_AHEAD_SUGGESTION = 1024 * 1024;
 
   private final InputStream stream;
   private final ByteArrayBuffer buffer = new ByteArrayBuffer();
   private int bufferReadHead;
 
-  public RackInput(InputStream inputStream) throws IOException {
+  /**
+   * Creates a {@link RackInput} stream that draws from the given {@link InputStream}.
+   *
+   * @param inputStream the source stream.
+   */
+  public RackInput(InputStream inputStream) {
     checkNotNull(inputStream);
     checkArgument(inputStream.markSupported(),
         "rack.input must be rewindable, but inputStream doesn't support mark.");
@@ -50,17 +54,22 @@ public class RackInput implements Closeable {
   }
 
   /**
-   * Override this if you want to allow for really really really long lines to be returned by {@link
-   * com.squareup.rack.RackInput#gets()}.
+   * Reads the next line from the stream.
+   *
+   * @return the next line, or null at EOF.
+   * @throws IOException
    */
-  protected int getMaxLineLength() {
-    return READ_AHEAD_SUGGESTION;
-  }
-
   public byte[] gets() throws IOException {
     return readToLinefeed();
   }
 
+  /**
+   * Reads length bytes from the stream. Reads all the way to EOF when length is null.
+   *
+   * @param length the desired number of bytes, or null.
+   * @return the bytes, or null at EOF when length is present.
+   * @throws IOException
+   */
   public byte[] read(Integer length) throws IOException {
     if (length == null) {
       return readToEof();
@@ -69,10 +78,24 @@ public class RackInput implements Closeable {
     }
   }
 
+  /**
+   * Resets the stream, so that it may be read again from the beginning.
+   *
+   * @throws IOException
+   */
   public void rewind() throws IOException {
     stream.reset();
     buffer.reset();
     bufferReadHead = 0;
+  }
+
+  /**
+   * Closes the stream.
+   *
+   * @throws IOException
+   */
+  @Override public void close() throws IOException {
+    stream.close();
   }
 
   private byte[] readToLinefeed() throws IOException {
@@ -83,9 +106,9 @@ public class RackInput implements Closeable {
       if (indexOfNewline == -1) {
         int bytesPresent = bytesAvailableInBuffer();
 
-        if (bytesPresent > getMaxLineLength()) {
+        if (bytesPresent > MAX_LINE_LENGTH) {
           throw new RuntimeException(
-              "Really, you have a line longer than " + getMaxLineLength() + " bytes?");
+              "Really, you have a line longer than " + MAX_LINE_LENGTH + " bytes?");
         }
 
         // next time through, start where we left off.
@@ -187,9 +210,5 @@ public class RackInput implements Closeable {
       buffer.setLength(remainingBytes);
       bufferReadHead = 0;
     }
-  }
-
-  @Override public void close() throws IOException {
-    stream.close();
   }
 }

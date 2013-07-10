@@ -20,25 +20,46 @@ import org.slf4j.Logger;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Sends rack.error messages to the given logger.
+ * Adapts a {@link Logger} to the required interface for {@code rack.errors}.
  */
 public class RackErrors {
   private final Logger logger;
   private final StringBuffer buffer;
 
+  /**
+   * Creates a {@link RackErrors} stream that forwards messages to the given {@link Logger}.
+   *
+   * @param logger the destination {@link Logger}.
+   */
   public RackErrors(Logger logger) {
     this.logger = checkNotNull(logger);
     this.buffer = new StringBuffer();
   }
 
-  public void puts(String s) {
-    logger.error(s);
+  /**
+   * Immediately writes the given message out to the error logger.
+   *
+   * @param message
+   */
+  public void puts(String message) {
+    logger.error(message);
   }
 
-  public void write(String s) {
-    buffer.append(s);
+  /**
+   * Buffers the given message internally. You may call {@link #write(String)} as many times as you
+   * like. To then write the composite buffered message to the error logger, call {@link #flush()}.
+   *
+   * @param message
+   */
+  public void write(String message) {
+    buffer.append(message);
   }
 
+  /**
+   * Writes internally-buffered messages out to the error logger.
+   *
+   * @see #write(String)
+   */
   public void flush() {
     if (buffer.length() > 0) {
       logger.error(buffer.toString());

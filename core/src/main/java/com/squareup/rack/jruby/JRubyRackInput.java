@@ -31,11 +31,10 @@ import org.jruby.runtime.builtin.IRubyObject;
 import org.jruby.util.ByteList;
 
 /**
- * Adapts a {@link com.squareup.rack.RackInput} into Ruby-space.
+ * <p>Adapts a {@link com.squareup.rack.RackInput} into Ruby-space.</p>
  *
- * Is primarily responsible for building ASCII-8BIT Ruby Strings from Java byte arrays.
- *
- * @see #toRubyString(byte[])
+ * <p>Is primarily responsible for translating Java byte arrays into Ruby Strings with
+ * {@code ASCII-8BIT} encoding.</p>
  */
 public class JRubyRackInput extends RubyObject {
   private RackInput rackInput;
@@ -61,14 +60,19 @@ public class JRubyRackInput extends RubyObject {
     super(runtime, klass);
   }
 
+  /**
+   * Creates a Ruby IO object that delegates to the given {@link RackInput}.
+   *
+   * @param runtime the Ruby runtime that will host this instance.
+   * @param rackInput the backing data source.
+   */
   public JRubyRackInput(Ruby runtime, RackInput rackInput) {
     super(runtime, getRackInputClass(runtime));
     this.rackInput = rackInput;
     this.ascii8bitEncoding = runtime.getEncodingService().getAscii8bitEncoding();
   }
 
-  @JRubyMethod
-  public IRubyObject gets() {
+  @JRubyMethod public IRubyObject gets() {
     try {
       return toRubyString(rackInput.gets());
     } catch (IOException e) {
@@ -76,8 +80,7 @@ public class JRubyRackInput extends RubyObject {
     }
   }
 
-  @JRubyMethod
-  public IRubyObject each(ThreadContext context, Block block) {
+  @JRubyMethod public IRubyObject each(ThreadContext context, Block block) {
     IRubyObject nil = getRuntime().getNil();
     IRubyObject line;
     while ((line = gets()) != nil) {
@@ -86,8 +89,7 @@ public class JRubyRackInput extends RubyObject {
     return nil;
   }
 
-  @JRubyMethod(optional = 1)
-  public IRubyObject read(ThreadContext context, IRubyObject[] args) {
+  @JRubyMethod(optional = 1) public IRubyObject read(ThreadContext context, IRubyObject[] args) {
     Integer length = null;
 
     if (args.length > 0) {
@@ -102,8 +104,7 @@ public class JRubyRackInput extends RubyObject {
     }
   }
 
-  @JRubyMethod
-  public IRubyObject rewind() {
+  @JRubyMethod public IRubyObject rewind() {
     try {
       rackInput.rewind();
     } catch (IOException e) {

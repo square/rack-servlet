@@ -20,6 +20,12 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * The HTTP request environment consumed by a {@link RackApplication}.
+ *
+ * @see <a href="http://rack.rubyforge.org/doc/SPEC.html">The Rack Specification</a>
+ * @see com.squareup.rack.servlet.RackEnvironmentBuilder
+ */
 public class RackEnvironment extends ForwardingMap<String, Object> {
   public static final String REQUEST_METHOD = "REQUEST_METHOD";
   public static final String SCRIPT_NAME = "SCRIPT_NAME";
@@ -41,17 +47,28 @@ public class RackEnvironment extends ForwardingMap<String, Object> {
   public static final String RACK_HIJACK = "rack.hijack?";
   public static final String MINECART_HTTP_SERVLET_REQUEST = "minecart.http_servlet_request";
 
-  private final Map<String, Object> delegate;
+  private final Map<String, Object> contents;
 
+  /**
+   * Creates a {@link RackEnvironment} with the given contents.
+   *
+   * @see com.squareup.rack.servlet.RackEnvironmentBuilder
+   * @param contents
+   */
   public RackEnvironment(Map<String, Object> contents) {
-    this.delegate = contents;
+    this.contents = contents;
+  }
+
+  /**
+   * Closes the rack.input stream.
+   *
+   * @throws IOException
+   */
+  public void closeRackInput() throws IOException {
+    ((Closeable) contents.get(RACK_INPUT)).close();
   }
 
   @Override protected Map<String, Object> delegate() {
-    return delegate;
-  }
-
-  public void closeRackInput() throws IOException {
-    ((Closeable) get(RACK_INPUT)).close();
+    return contents;
   }
 }

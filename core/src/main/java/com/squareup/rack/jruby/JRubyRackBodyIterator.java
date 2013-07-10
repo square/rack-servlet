@@ -17,19 +17,25 @@ package com.squareup.rack.jruby;
 
 import com.google.common.collect.AbstractIterator;
 import org.jruby.RubyEnumerator;
-import org.jruby.RubyString;
 import org.jruby.exceptions.RaiseException;
 import org.jruby.runtime.ThreadContext;
 import org.jruby.runtime.builtin.IRubyObject;
 
 /**
- * Adapts a (RubyObject) enumerable into Java-space.
+ * <p>Adapts a (RubyObject) Enumerable into Java-space.</p>
+ *
+ * <p>Attempts to close the Enumerable after iteration where possible.</p>
  */
 public class JRubyRackBodyIterator extends AbstractIterator<byte[]> {
   private final IRubyObject body;
   private final ThreadContext threadContext;
   private final RubyEnumerator enumerator;
 
+  /**
+   * Creates a byte array Iterator backed by the given Ruby Enumerable.
+   *
+   * @param body the backing Enumerable.
+   */
   public JRubyRackBodyIterator(IRubyObject body) {
     this.body = body;
     this.threadContext = body.getRuntime().getThreadService().getCurrentContext();
@@ -38,7 +44,7 @@ public class JRubyRackBodyIterator extends AbstractIterator<byte[]> {
 
   @Override protected byte[] computeNext() {
     try {
-      return ((RubyString) enumerator.callMethod(threadContext, "next")).getBytes();
+      return enumerator.callMethod(threadContext, "next").convertToString().getBytes();
     } catch (RaiseException e) {
       close();
       return endOfData();

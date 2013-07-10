@@ -23,7 +23,7 @@ import com.squareup.rack.RackEnvironment;
 import com.squareup.rack.RackErrors;
 import com.squareup.rack.RackInput;
 import com.squareup.rack.RackLogger;
-import com.squareup.rack.io.TempfileBackedInputStream;
+import com.squareup.rack.io.TempfileBufferedInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
@@ -55,7 +55,9 @@ import static com.squareup.rack.RackEnvironment.SERVER_NAME;
 import static com.squareup.rack.RackEnvironment.SERVER_PORT;
 
 /**
- * Transforms an HttpServletRequest into a Rack environment hash.
+ * <p>Transforms an {@link HttpServletRequest} into a {@link RackEnvironment}.</p>
+ *
+ * <p>Conforms to version 1.2 of the Rack specification</p>.
  *
  * @see <a href="http://rack.rubyforge.org/doc/SPEC.html">The Rack Specification</a>
  * @see <a href="https://tools.ietf.org/html/rfc3875#section-4.1.18">RFC 3875, section 4.1.18</a>
@@ -109,7 +111,7 @@ public class RackEnvironmentBuilder {
 
   private RackInput rackInput(HttpServletRequest request) {
     try {
-      return new RackInput(new TempfileBackedInputStream(request.getInputStream()));
+      return new RackInput(new TempfileBufferedInputStream(request.getInputStream()));
     } catch (IOException e) {
       throw propagate(e);
     }

@@ -21,33 +21,41 @@ import org.slf4j.MarkerFactory;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Adapts a {@link Logger} to the required interface for {@code rack.logger}.
+ */
 public class RackLogger {
   public static final Marker FATAL = MarkerFactory.getMarker("FATAL");
 
-  private final Logger delegate;
+  private final Logger logger;
 
-  public RackLogger(Logger delegate) {
-    this.delegate = checkNotNull(delegate);
+  /**
+   * Creates a {@link RackLogger} that forwards messages to the given {@link Logger}.
+   *
+   * @param logger
+   */
+  public RackLogger(Logger logger) {
+    this.logger = checkNotNull(logger);
   }
 
   public void info(String message) {
-    delegate.info(message);
+    logger.info(message);
   }
 
   public void debug(String message) {
-    delegate.debug(message);
+    logger.debug(message);
   }
 
   public void warn(String message) {
-    delegate.warn(message);
+    logger.warn(message);
   }
 
   public void error(String message) {
-    delegate.error(message);
+    logger.error(message);
   }
 
   public void fatal(String message) {
     // See http://www.slf4j.org/faq.html#fatal
-    delegate.error(FATAL, message);
+    logger.error(FATAL, message);
   }
 }

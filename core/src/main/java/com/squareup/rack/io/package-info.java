@@ -13,19 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.squareup.rack;
-
 /**
- * A Rack application.
- *
- * @see <a href="http://rack.rubyforge.org/doc/SPEC.html">The Rack Specification</a>
+ * Support for rewinding the {@link javax.servlet.ServletInputStream}, as required by the Rack
+ * specification.
  */
-public interface RackApplication {
-  /**
-   * Processes a single HTTP request.
-   *
-   * @param environment the HTTP request environment.
-   * @return the HTTP response.
-   */
-  RackResponse call(RackEnvironment environment);
-}
+package com.squareup.rack.io;

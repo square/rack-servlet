@@ -17,11 +17,11 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class TempfileBackedInputStreamTest {
+public class TempfileBufferedInputStreamTest {
   public @Rule TemporaryFolder tempDir = new TemporaryFolder();
 
   @Test public void readingAShortStreamTwice() throws IOException {
-    InputStream subject = new TempfileBackedInputStream(containing("Hello!"));
+    InputStream subject = new TempfileBufferedInputStream(containing("Hello!"));
     subject.mark(10);
     assertThat(read(subject)).isEqualTo("Hello!");
     subject.reset();
@@ -29,7 +29,7 @@ public class TempfileBackedInputStreamTest {
   }
 
   @Test public void readingALongStreamTwice() throws IOException {
-    InputStream subject = new TempfileBackedInputStream(containing("Hello!"), 3);
+    InputStream subject = new TempfileBufferedInputStream(containing("Hello!"), 3);
     subject.mark(10);
     assertThat(read(subject)).isEqualTo("Hello!");
     subject.reset();
@@ -37,7 +37,7 @@ public class TempfileBackedInputStreamTest {
   }
 
   @Test public void shouldResetToMarkUnderThreshold() throws Exception {
-    InputStream subject = new TempfileBackedInputStream(containing("Hello!"));
+    InputStream subject = new TempfileBufferedInputStream(containing("Hello!"));
     read(subject, 2);
     subject.mark(10);
     read(subject);
@@ -46,7 +46,7 @@ public class TempfileBackedInputStreamTest {
   }
 
   @Test public void shouldResetToMarkOverThreshold() throws Exception {
-    InputStream subject = new TempfileBackedInputStream(containing("Hello!"), 3);
+    InputStream subject = new TempfileBufferedInputStream(containing("Hello!"), 3);
     read(subject, 4);
     subject.mark(10);
     read(subject);
@@ -55,7 +55,7 @@ public class TempfileBackedInputStreamTest {
   }
 
   @Test public void shouldSupportMultipleMarks() throws Exception {
-    InputStream subject = new TempfileBackedInputStream(containing("123456789"), 3);
+    InputStream subject = new TempfileBufferedInputStream(containing("123456789"), 3);
     subject.mark(10); // set the mark at '1'
     read(subject, 4);
     subject.reset();
@@ -73,7 +73,7 @@ public class TempfileBackedInputStreamTest {
     System.setProperty("java.io.tmpdir", tempDir.getRoot().toString());
 
     try {
-      InputStream subject = new TempfileBackedInputStream(containing("123456789"), 3);
+      InputStream subject = new TempfileBufferedInputStream(containing("123456789"), 3);
       read(subject);
       assertThat(tempDir.getRoot().listFiles()).isEmpty();
     } finally {
@@ -89,7 +89,7 @@ public class TempfileBackedInputStreamTest {
         super.close();
       }
     };
-    InputStream subject = new TempfileBackedInputStream(source, 3);
+    InputStream subject = new TempfileBufferedInputStream(source, 3);
     read(subject);
     subject.close();
     assertThat(log).contains("closed InputStream");
@@ -99,7 +99,7 @@ public class TempfileBackedInputStreamTest {
     final List<String> log = new ArrayList<String>();
 
     InputStream subject =
-        new TempfileBackedInputStream(containing("123456789"), 3) {
+        new TempfileBufferedInputStream(containing("123456789"), 3) {
           @Override FileInputStream createFileInputStream(File tempFile)
               throws FileNotFoundException {
             return new FileInputStream(tempFile) {

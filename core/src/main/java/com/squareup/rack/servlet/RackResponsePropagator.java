@@ -24,7 +24,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Translates RackResponses into HttpServletResponses.
+ * Writes a {@link RackResponse} onto an {@link HttpServletResponse}.
  */
 public class RackResponsePropagator {
   private static final String RACK_INTERNAL_HEADER_PREFIX = "rack.";

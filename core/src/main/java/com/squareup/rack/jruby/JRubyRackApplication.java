@@ -21,6 +21,7 @@ import com.squareup.rack.RackInput;
 import com.squareup.rack.RackResponse;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.jruby.Ruby;
 import org.jruby.RubyArray;
 import org.jruby.RubyHash;
@@ -37,24 +38,40 @@ public class JRubyRackApplication implements RackApplication {
   private final Ruby runtime;
   private final ThreadService threadService;
 
+  /**
+   * <p>Creates a {@link RackApplication} that delegates to the given Ruby Rack application.</p>
+   *
+   * <p>To obtain the necessary {@link IRubyObject}, you can create a JRuby
+   * {@link org.jruby.embed.ScriptingContainer} and {@link org.jruby.embed.ScriptingContainer#parse}
+   * and {@link org.jruby.embed.EmbedEvalUnit#run()} your Ruby code. See our examples for concrete
+   * code.</p>
+   *
+   * @param application the Ruby Rack application.
+   */
   public JRubyRackApplication(IRubyObject application) {
     this.application = application;
     this.runtime = application.getRuntime();
     this.threadService = runtime.getThreadService();
   }
 
+  /**
+   * Calls the delegate Rack application, translating into and back out of the JRuby interpreter.
+   *
+   * @param environment the Rack environment
+   * @return the Rack response
+   */
   @Override public RackResponse call(RackEnvironment environment) {
-    RubyHash environmentHash = convertToRubyHash(environment);
+    RubyHash environmentHash = convertToRubyHash(environment.entrySet());
 
     RubyArray response = callRackApplication(environmentHash);
 
     return convertToJavaRackResponse(response);
   }
 
-  private RubyHash convertToRubyHash(Map<String, Object> map) {
+  private RubyHash convertToRubyHash(Set<Map.Entry<String, Object>> entries) {
     RubyHash hash = newHash(runtime);
 
-    for (Map.Entry<String, Object> entry : map.entrySet()) {
+    for (Map.Entry<String, Object> entry : entries) {
       String key = entry.getKey();
       Object value = entry.getValue();
 

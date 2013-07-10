@@ -28,13 +28,20 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 /**
- * Makes an InputStream effectively infinitely-rewindable by buffering first in memory,
- * then to disk.
+ * <p>Buffers an {@link InputStream}, making it effectively rewindable.</p>
  *
- * The tempfile buffer is written to java's default tmpdir, which you can choose by specifying
- * the -Djava.io.tmpdir=VALUE option when starting java.
+ * <p>Operates in-memory, just like a {@link java.io.BufferedInputStream}, up to a size threshold,
+ * then begins buffering to disk once that size threshold is crossed.</p>
+ *
+ * <p>As compared with Guava's {@link com.google.common.io.FileBackedOutputStream}, does not require
+ * processing the entire stream before offering its contents to client code.</p>
+ *
+ * <p>Uses the default temporary-file directory, which you can control by setting the
+ * {@code java.io.tmpdir} system property.</p>
+ *
+ * @see File#createTempFile(String, String)
  */
-public class TempfileBackedInputStream extends InputStream {
+public class TempfileBufferedInputStream extends InputStream {
   private static final int DEFAULT_THRESHOLD = 1024 * 1024;
 
   private final InputStream source;
@@ -44,11 +51,22 @@ public class TempfileBackedInputStream extends InputStream {
   private long markPos;
   private Buffer buffer;
 
-  public TempfileBackedInputStream(InputStream source) throws IOException {
+  /**
+   * Buffers a source InputStream, dropping to disk once a default size threshold has been crossed.
+   *
+   * @param source the InputStream to buffer.
+   */
+  public TempfileBufferedInputStream(InputStream source) {
     this(source, DEFAULT_THRESHOLD);
   }
 
-  public TempfileBackedInputStream(InputStream source, int threshold) throws IOException {
+  /**
+   * Buffers a source InputStream, dropping to disk once the given size threshold has been crossed.
+   *
+   * @param source the InputStream to buffer.
+   * @param threshold the size threshold beyond which to buffer to disk.
+   */
+  public TempfileBufferedInputStream(InputStream source, int threshold) {
     Preconditions.checkNotNull(source);
     this.source = source;
     this.buffer = new MemoryBuffer(threshold);
@@ -131,7 +149,7 @@ public class TempfileBackedInputStream extends InputStream {
 
     public MemoryBuffer(int threshold) {
       this.threshold = threshold;
-      cacheOutputStream = new ByteArrayBuffer(threshold);
+      this.cacheOutputStream = new ByteArrayBuffer(threshold);
     }
 
     public void replay(byte[] bytes, int offset, int bytesToTransfer) {
