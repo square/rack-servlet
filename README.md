@@ -1,4 +1,4 @@
-Rack Servlet
+Rack Servlet [![Build Status](https://travis-ci.org/square/rack-servlet.png)](https://travis-ci.org/square/rack-servlet)
 ============
 
 Embed JRuby Rack applications in your Java container.
