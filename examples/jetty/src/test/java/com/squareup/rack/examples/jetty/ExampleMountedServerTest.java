@@ -16,7 +16,7 @@ import org.junit.Test;
 import static org.fest.assertions.api.Assertions.assertThat;
 import static org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY;
 
-public class ExampleServerTest {
+public class ExampleMountedServerTest {
   private HttpClient client;
   private HttpHost localhost;
   private ExampleServer server;
@@ -30,7 +30,7 @@ public class ExampleServerTest {
     IRubyObject application = ruby.parse("lambda { |env| [200, {}, ['Hello, World!']] }").run();
     RackServlet servlet = new RackServlet(new JRubyRackApplication(application));
 
-    server = new ExampleServer(servlet, "/*");
+    server = new ExampleServer(servlet, "/root/*");
     server.start();
     client = new DefaultHttpClient();
     localhost = new HttpHost("localhost", server.getPort());
@@ -40,15 +40,23 @@ public class ExampleServerTest {
     server.stop();
   }
 
+  // Tests inspired from: http://account.pacip.com/jetty/doc/PathMapping.html
   @Test public void get() throws IOException {
-    HttpResponse response = ExampleServer.get(client, localhost, "/anything");
+    HttpResponse response = ExampleServer.get(client, localhost, "/root/anything");
     assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
     assertThat(response.getEntity().getContent()).hasContentEqualTo(
         ExampleServer.streamOf("Hello, World!"));
   }
 
   @Test public void get_atRootMountedURIs() throws IOException {
-    HttpResponse response = ExampleServer.get(client, localhost, "/");
+    HttpResponse response = ExampleServer.get(client, localhost, "/root");
+    assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+    assertThat(response.getEntity().getContent()).hasContentEqualTo(
+        ExampleServer.streamOf("Hello, World!"));
+  }
+
+  @Test public void get_atRootMountedURIsWithEnd() throws IOException {
+    HttpResponse response = ExampleServer.get(client, localhost, "/root/");
     assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
     assertThat(response.getEntity().getContent()).hasContentEqualTo(
         ExampleServer.streamOf("Hello, World!"));
