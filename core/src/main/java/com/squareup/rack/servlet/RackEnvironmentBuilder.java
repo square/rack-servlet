@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.google.common.base.Objects.firstNonNull;
 import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Iterators.forEnumeration;
@@ -82,7 +83,7 @@ public class RackEnvironmentBuilder {
 
     content.put(REQUEST_METHOD, request.getMethod());
     content.put(SCRIPT_NAME, request.getServletPath());
-    content.put(PATH_INFO, request.getPathInfo());
+    content.put(PATH_INFO, firstNonNull(request.getPathInfo(), "/"));
     content.put(QUERY_STRING, nullToEmpty(request.getQueryString()));
     content.put(SERVER_NAME, request.getServerName());
     content.put(SERVER_PORT, String.valueOf(request.getServerPort()));
