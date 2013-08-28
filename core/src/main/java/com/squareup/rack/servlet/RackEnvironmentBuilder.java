@@ -82,7 +82,7 @@ public class RackEnvironmentBuilder {
 
     content.put(REQUEST_METHOD, request.getMethod());
     content.put(SCRIPT_NAME, request.getServletPath());
-    content.put(PATH_INFO, request.getPathInfo());
+    content.put(PATH_INFO, nullToEmpty(request.getPathInfo()));
     content.put(QUERY_STRING, nullToEmpty(request.getQueryString()));
     content.put(SERVER_NAME, request.getServerName());
     content.put(SERVER_PORT, String.valueOf(request.getServerPort()));
