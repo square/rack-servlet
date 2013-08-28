@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.Enumeration;
 import javax.servlet.ServletInputStream;
 
+import static com.google.common.base.Strings.emptyToNull;
+
 public class TestHttpServletRequest extends NullHttpServletRequest {
   private final String method;
   private final String servletPath;
@@ -47,8 +49,11 @@ public class TestHttpServletRequest extends NullHttpServletRequest {
       return this;
     }
 
+    private static final CharMatcher SLASH = CharMatcher.is('/');
+    private static final CharMatcher STAR = CharMatcher.is('*');
+
     public Builder whenMountedAt(String path) {
-      this.servletPath = CharMatcher.is('/').trimTrailingFrom(path);
+      this.servletPath = SLASH.trimTrailingFrom(STAR.trimTrailingFrom(path));
       return this;
     }
 
@@ -85,7 +90,7 @@ public class TestHttpServletRequest extends NullHttpServletRequest {
   }
 
   @Override public String getPathInfo() {
-    return uri.getPath().substring(servletPath.length());
+    return emptyToNull(uri.getPath().substring(servletPath.length()));
   }
 
   @Override public String getQueryString() {

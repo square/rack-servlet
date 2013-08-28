@@ -41,8 +41,14 @@ public class RackEnvironmentBuilderTest {
     assertThat(environment()).contains(entry("PATH_INFO", "/path/to/resource"));
   }
 
-  @Test public void scriptNameAndPathInfoWhenMounted() {
-    request.uri("http://example.com/path/to/resource").whenMountedAt("/path/to/");
+  @Test public void scriptNameAndPathInfoWhenMountedAndRequestingTheRoot() {
+    request.uri("http://example.com/path/to").whenMountedAt("/path/to/*");
+    assertThat(environment()).contains(entry("SCRIPT_NAME", "/path/to"));
+    assertThat(environment()).contains(entry("PATH_INFO", ""));
+  }
+
+  @Test public void scriptNameAndPathInfoWhenMountedAndRequestingAPath() {
+    request.uri("http://example.com/path/to/resource").whenMountedAt("/path/to/*");
     assertThat(environment()).contains(entry("SCRIPT_NAME", "/path/to"));
     assertThat(environment()).contains(entry("PATH_INFO", "/resource"));
   }
