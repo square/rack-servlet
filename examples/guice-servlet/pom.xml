@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.squareup.rack</groupId>
     <artifactId>rack-servlet-parent</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -25,7 +25,7 @@
     <dependency>
       <groupId>com.squareup.rack</groupId>
       <artifactId>rack-servlet</artifactId>
-      <version>1.1</version>
+      <version>1.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.eclipse.jetty</groupId>
