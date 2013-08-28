@@ -29,7 +29,7 @@ Quick Start
 ```java
 // Use JRuby to build your Rack application:
 ScriptingContainer ruby = new ScriptingContainer();
-IRubyObject application = ruby.parse("lambda { |env| [200, {}, ['Hello, World!'] }").run();
+IRubyObject application = ruby.parse("lambda { |env| [200, {}, ['Hello, World!']] }").run();
 
 // Build a RackServlet with that Rack application:
 Servlet servlet = new RackServlet(new JRubyRackApplication(application));
