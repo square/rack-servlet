@@ -42,7 +42,9 @@ public class RackResponsePropagator {
   private void propagateHeaders(RackResponse rackResponse, HttpServletResponse response) {
     for (Map.Entry<String, String> header : rackResponse.getHeaders().entrySet()) {
       if (shouldPropagateHeaderToClient(header)) {
-        response.addHeader(header.getKey(), header.getValue());
+        for (String val : header.getValue().split("\n")) {
+          response.addHeader(header.getKey(), val);
+        }
       }
     }
   }

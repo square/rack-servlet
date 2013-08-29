@@ -52,6 +52,13 @@ public class RackResponsePropagatorTest {
     verify(response, never()).addHeader(eq("rack.internal"), anyString());
   }
 
+  @Test public void propagateHeadersMultipleValues() {
+    rackResponse.header("Set-Cookie", "foo=bar\nbar=foo");
+    subject.propagate(rackResponse.build(), response);
+    verify(response).addHeader("Set-Cookie", "foo=bar");
+    verify(response).addHeader("Set-Cookie", "bar=foo");
+  }
+
   @Test public void propagateBody() throws IOException {
     rackResponse.body("Here ".getBytes(), "are ".getBytes(), "the ".getBytes(), "parts.".getBytes());
 
