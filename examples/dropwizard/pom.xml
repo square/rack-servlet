@@ -4,7 +4,7 @@
   <parent>
     <groupId>com.squareup.rack</groupId>
     <artifactId>rack-servlet-parent</artifactId>
-    <version>1.2-SNAPSHOT</version>
+    <version>1.2</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.squareup.rack</groupId>
       <artifactId>rack-servlet</artifactId>
-      <version>1.2-SNAPSHOT</version>
+      <version>1.2</version>
     </dependency>
     <dependency>
       <groupId>com.yammer.dropwizard</groupId>
