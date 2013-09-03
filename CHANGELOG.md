@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.2 *(2013-09-03)*
+----------------------------
+
+* Support headers with multiple values. ("Set-Cookie," for example.)
+
 Version 1.1 *(2013-08-28)*
 ----------------------------
 
