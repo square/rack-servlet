@@ -20,6 +20,7 @@
     <module>examples/dropwizard</module>
     <module>examples/guice-servlet</module>
     <module>examples/jetty</module>
+    <module>integration</module>
   </modules>
 
   <properties>
