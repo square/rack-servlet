@@ -47,6 +47,12 @@ public class RackResponsePropagator {
         }
       }
     }
+
+    try {
+      response.flushBuffer();
+    } catch (IOException e) {
+      Throwables.propagate(e);
+    }
   }
 
   private boolean shouldPropagateHeaderToClient(Map.Entry<String, String> header) {

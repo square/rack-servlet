@@ -2,8 +2,9 @@ package com.squareup.rack.integration;
 
 import com.squareup.rack.jruby.JRubyRackApplication;
 import com.squareup.rack.servlet.RackServlet;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import org.apache.http.Header;
+import java.io.InputStream;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,7 +20,7 @@ import static org.fest.assertions.api.Assertions.assertThat;
 import static org.jruby.embed.PathType.CLASSPATH;
 import static org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY;
 
-public class MultiValuedHeadersTest {
+public class HeaderFlushingTest {
   private HttpClient client;
   private HttpHost localhost;
   private ExampleServer server;
@@ -43,15 +44,21 @@ public class MultiValuedHeadersTest {
     server.stop();
   }
 
-  @Test public void setMultipleCookies() throws IOException {
-    HttpResponse response = get("/set-multiple-cookies");
+  @Test public void flushingHeaders() throws IOException {
+    HttpResponse response = get("/legen-wait-for-it");
     assertThat(response.getStatusLine().getStatusCode()).isEqualTo(200);
+    assertThat(response.getFirstHeader("Transfer-Encoding").getValue()).isEqualTo("chunked");
 
-    Header[] cookies = response.getHeaders("Set-Cookie");
-    assertThat(cookies).hasSize(2);
+    InputStream stream = response.getEntity().getContent();
+    assertThat(stream.available()).isEqualTo(0);
+
+    ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+    response.getEntity().writeTo(buffer);
+    assertThat(buffer.toString()).isEqualTo("dary!");
   }
 
   private HttpResponse get(String path) throws IOException {
     return client.execute(localhost, new HttpGet(path));
   }
+
 }
