@@ -2,16 +2,13 @@ package com.squareup.rack.integration;
 
 import com.squareup.rack.jruby.JRubyRackApplication;
 import com.squareup.rack.servlet.RackServlet;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.jruby.embed.PathType;
 import org.jruby.embed.ScriptingContainer;
 import org.jruby.runtime.builtin.IRubyObject;
 import org.junit.After;
