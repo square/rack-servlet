@@ -100,10 +100,10 @@ public class JRubyRackApplication implements RackApplication {
   }
 
   private RackResponse convertToJavaRackResponse(RubyArray response) {
-    Long status = (Long) response.get(0);
+    int status = Integer.parseInt(response.get(0).toString(), 10);
     Map headers = (Map) response.get(1);
     IRubyObject body = (IRubyObject) response.get(2);
 
-    return new RackResponse(status.intValue(), headers, new JRubyRackBodyIterator(body));
+    return new RackResponse(status, headers, new JRubyRackBodyIterator(body));
   }
 }
