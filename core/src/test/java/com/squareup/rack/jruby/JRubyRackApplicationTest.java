@@ -54,4 +54,13 @@ public class JRubyRackApplicationTest {
 
     assertThat(SPACE.join(strings.build())).isEqualTo(SPACE.join(env.keySet()));
   }
+
+  @Test public void callParsesTheResponseStatusFromAString() {
+    IRubyObject callable = Ruby.getGlobalRuntime()
+        .evalScriptlet("proc { |env| ['201', {'Content-Type' => 'text/plain'}, env.keys] }");
+    app = new JRubyRackApplication(callable);
+
+    RackResponse response = app.call(env);
+    assertThat(response.getStatus()).isEqualTo(201);
+  }
 }
