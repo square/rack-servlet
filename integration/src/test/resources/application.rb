@@ -1,6 +1,14 @@
 require 'sinatra/base'
 
 class Application < Sinatra::Base
+  get '/global_vars' do
+    if $servlet_context
+      [200, '']
+    else
+      [404, '']
+    end
+  end
+
   get '/set-multiple-cookies' do
     response.set_cookie :foo, 'bar'
     response.set_cookie :bar, 'foo'

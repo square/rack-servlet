@@ -15,12 +15,21 @@
  */
 package com.squareup.rack;
 
+import javax.servlet.ServletContext;
+
 /**
  * A Rack application.
  *
  * @see <a href="http://rack.rubyforge.org/doc/SPEC.html">The Rack Specification</a>
  */
 public interface RackApplication {
+  /**
+   * Setup the environment once when the servlet started
+   *
+   * @param servletContext the ServletContext to set
+   */
+  void setup(ServletContext servletContext);
+
   /**
    * Processes a single HTTP request.
    *
