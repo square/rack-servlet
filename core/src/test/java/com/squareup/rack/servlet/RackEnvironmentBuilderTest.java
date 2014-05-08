@@ -170,6 +170,13 @@ public class RackEnvironmentBuilderTest {
     assertThat(environment().get("minecart.http_servlet_request")).isSameAs(httpServletRequest);
   }
 
+  @Test public void rackAttributes() {
+    Object testObject = new Object();
+    request.attribute("ExampleAttribute", testObject);
+    assertThat(environment()).containsKey("ExampleAttribute");
+    assertThat(environment().get("ExampleAttribute")).isSameAs(testObject);
+  }
+
   private Map<String, Object> environment() {
     RackEnvironmentBuilder environmentBuilder = new RackEnvironmentBuilder();
     httpServletRequest = request.build();

@@ -25,8 +25,10 @@ import com.squareup.rack.RackInput;
 import com.squareup.rack.RackLogger;
 import com.squareup.rack.io.TempfileBufferedInputStream;
 import java.io.IOException;
+import java.security.cert.X509Certificate;
 import java.util.Enumeration;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,6 +106,14 @@ public class RackEnvironmentBuilder {
     while (headerNames.hasMoreElements()) {
       String name = headerNames.nextElement();
       content.put(rackHttpHeaderKey(name), COMMA.join(forEnumeration(request.getHeaders(name))));
+    }
+
+    // This will include attributes like javax.servlet.request.X509Certificate
+    Enumeration<String> attributeNames = request.getAttributeNames();
+
+    while (attributeNames.hasMoreElements()) {
+      String name = attributeNames.nextElement();
+      content.put(name, request.getAttribute(name));
     }
 
     return new RackEnvironment(content.build());
