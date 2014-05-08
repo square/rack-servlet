@@ -9,6 +9,9 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.servlet.ServletInputStream;
 
 import static com.google.common.base.Strings.emptyToNull;
@@ -19,16 +22,18 @@ public class TestHttpServletRequest extends NullHttpServletRequest {
   private final URI uri;
   private final ListMultimap<String, String> headers;
   private final String body;
+  private final Map<String, Object> attributes;
 
   public static Builder newBuilder() {
     return new Builder();
   }
 
   public static class Builder {
+    private final HashMap<String, Object> attributes;
     private String method;
     private String servletPath;
     private URI requestUri;
-    private ImmutableListMultimap.Builder<String,String> headersBuilder;
+    private ImmutableListMultimap.Builder<String, String> headersBuilder;
     private String body;
 
     private Builder() {
@@ -37,6 +42,7 @@ public class TestHttpServletRequest extends NullHttpServletRequest {
       requestUri = URI.create("http://example.com/");
       headersBuilder = ImmutableListMultimap.builder();
       body = "";
+      attributes = new HashMap<String, Object>();
     }
 
     public Builder body(String body) {
@@ -67,18 +73,26 @@ public class TestHttpServletRequest extends NullHttpServletRequest {
       return this;
     }
 
+    public Builder attribute(String name, Object value) {
+      attributes.put(name, value);
+      return this;
+    }
+
     public TestHttpServletRequest build() {
-      return new TestHttpServletRequest(method, servletPath, requestUri, headersBuilder.build(), body);
+      return new TestHttpServletRequest(method, servletPath, requestUri, headersBuilder.build(),
+          body, attributes);
     }
   }
 
   private TestHttpServletRequest(String method, String servletPath, URI uri,
-      ListMultimap<String, String> headers, String body) {
+      ListMultimap<String, String> headers, String body, Map<String, Object>
+      attributes) {
     this.method = method;
     this.servletPath = servletPath;
     this.uri = uri;
     this.headers = headers;
     this.body = body;
+    this.attributes = attributes;
   }
 
   @Override public String getMethod() {
@@ -127,5 +141,23 @@ public class TestHttpServletRequest extends NullHttpServletRequest {
 
   @Override public Enumeration<String> getHeaders(String name) {
     return Collections.enumeration(headers.get(name));
+  }
+
+  @Override public Object getAttribute(String name) {
+    return attributes.get(name);
+  }
+
+  @Override public Enumeration<String> getAttributeNames() {
+    final Iterator<String> iterator = attributes.keySet().iterator();
+
+    return new Enumeration<String>() {
+      public boolean hasMoreElements() {
+        return iterator.hasNext();
+      }
+
+      public String nextElement() {
+        return iterator.next();
+      }
+    };
   }
 }
