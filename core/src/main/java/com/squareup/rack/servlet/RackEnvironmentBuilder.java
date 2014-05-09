@@ -106,6 +106,14 @@ public class RackEnvironmentBuilder {
       content.put(rackHttpHeaderKey(name), COMMA.join(forEnumeration(request.getHeaders(name))));
     }
 
+    // This will include attributes like javax.servlet.request.X509Certificate
+    Enumeration<String> attributeNames = request.getAttributeNames();
+
+    while (attributeNames.hasMoreElements()) {
+      String name = attributeNames.nextElement();
+      content.put(name, request.getAttribute(name));
+    }
+
     return new RackEnvironment(content.build());
   }
 
