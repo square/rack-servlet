@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 1.5 *(2014-05-09)*
+----------------------------
+
+* Also copy servlet request attributes into the rack environment.
+
 Version 1.4 *(2013-11-07)*
 ----------------------------
 
