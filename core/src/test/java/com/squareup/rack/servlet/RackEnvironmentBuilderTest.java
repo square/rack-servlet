@@ -106,6 +106,22 @@ public class RackEnvironmentBuilderTest {
     assertThat(environment()).doesNotContainKey("HTTP_CONTENT_TYPE");
   }
 
+  @Test public void httpHeadersXForwardedForMultiple() {
+    request.header("X-Forwarded-For", "192.168.0.1");
+    request.header("X-Forwarded-For", "10.0.1.1");
+    assertThat(environment()).contains(entry("HTTP_X_FORWARDED_FOR", "192.168.0.1,10.0.1.1"));
+  }
+
+  @Test public void httpHeadersXForwardedForMultiplePunctuationDifferences() {
+    // There seems to be mixed consensus on the internet as to what to do in this case. Underscores
+    // are perfectly valid in HTTP header names, but many webservers discard such headers so as to
+    // avoid collision with CGI environment variables. (See nginx's underscores_in_headers setting.)
+    // We choose to honor them, folding their values in with their dashed brethren.
+    request.header("X-Forwarded-For", "192.168.0.1");
+    request.header("X-Forwarded_For", "10.0.1.1");
+    assertThat(environment()).contains(entry("HTTP_X_FORWARDED_FOR", "192.168.0.1,10.0.1.1"));
+  }
+
   @Test public void rackVersion() {
     assertThat(environment()).contains(entry("rack.version", ImmutableList.of(1, 2)));
   }

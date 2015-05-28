@@ -18,6 +18,7 @@ package com.squareup.rack.servlet;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableListMultimap;
 import com.google.common.collect.ImmutableMap;
 import com.squareup.rack.RackEnvironment;
 import com.squareup.rack.RackErrors;
@@ -25,15 +26,16 @@ import com.squareup.rack.RackInput;
 import com.squareup.rack.RackLogger;
 import com.squareup.rack.io.TempfileBufferedInputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static com.google.common.base.Strings.nullToEmpty;
 import static com.google.common.base.Throwables.propagate;
-import static com.google.common.collect.Iterators.forEnumeration;
 import static com.squareup.rack.RackEnvironment.CONTENT_LENGTH;
 import static com.squareup.rack.RackEnvironment.CONTENT_TYPE;
 import static com.squareup.rack.RackEnvironment.HTTP_HEADER_PREFIX;
@@ -53,6 +55,7 @@ import static com.squareup.rack.RackEnvironment.REQUEST_METHOD;
 import static com.squareup.rack.RackEnvironment.SCRIPT_NAME;
 import static com.squareup.rack.RackEnvironment.SERVER_NAME;
 import static com.squareup.rack.RackEnvironment.SERVER_PORT;
+import static java.util.Collections.list;
 
 /**
  * <p>Transforms an {@link HttpServletRequest} into a {@link RackEnvironment}.</p>
@@ -99,13 +102,22 @@ public class RackEnvironmentBuilder {
     // Extra things we add that aren't in the Rack specification:
     content.put(MINECART_HTTP_SERVLET_REQUEST, request);
 
+    // HTTP headers; Multimap acrobatics ensure we normalize capitalization and
+    // punctuation differences early
     Enumeration<String> headerNames = request.getHeaderNames();
+
+    ImmutableListMultimap.Builder<String, Object> headers = ImmutableListMultimap.builder();
 
     while (headerNames.hasMoreElements()) {
       String name = headerNames.nextElement();
-      content.put(rackHttpHeaderKey(name), COMMA.join(forEnumeration(request.getHeaders(name))));
+      headers.putAll(rackHttpHeaderKey(name), list(request.getHeaders(name)));
     }
 
+    for (Map.Entry<String, Collection<Object>> header : headers.build().asMap().entrySet()) {
+      content.put(header.getKey(), COMMA.join(header.getValue()));
+    }
+
+    // Request attributes
     // This will include attributes like javax.servlet.request.X509Certificate
     Enumeration<String> attributeNames = request.getAttributeNames();
 
