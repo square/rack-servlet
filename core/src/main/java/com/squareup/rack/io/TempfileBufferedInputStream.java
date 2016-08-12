@@ -149,7 +149,7 @@ public class TempfileBufferedInputStream extends InputStream {
 
     public MemoryBuffer(int threshold) {
       this.threshold = threshold;
-      this.cacheOutputStream = new ByteArrayBuffer(threshold);
+      this.cacheOutputStream = new ByteArrayBuffer();
     }
 
     public void replay(byte[] bytes, int offset, int bytesToTransfer) {
