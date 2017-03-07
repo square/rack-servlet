@@ -152,7 +152,11 @@ public class RackInput implements Closeable {
 
     int bytesStillNeeded = length - buffer.getLength();
     if (bytesStillNeeded > 0) {
-      fillBuffer(bytesStillNeeded);
+      int bytesRead = fillBuffer(bytesStillNeeded);
+      while (bytesRead != -1 && bytesStillNeeded > 0) {
+        bytesStillNeeded -= bytesRead;
+        bytesRead = fillBuffer(bytesStillNeeded);
+      }
     }
 
     return consumeBytesFromBuffer(length);

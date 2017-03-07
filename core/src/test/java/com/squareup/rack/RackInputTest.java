@@ -1,6 +1,7 @@
 package com.squareup.rack;
 
 import java.io.ByteArrayInputStream;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,10 +14,12 @@ public class RackInputTest {
 
   private RackInput empty;
   private RackInput full;
+  private RackInput fullSlow;
 
   @Before public void setUp() throws Exception {
     empty = rackInputFor(EMPTY_BYTES);
     full = rackInputFor(BYTES);
+    fullSlow = slowRackInputFor(BYTES);
   }
 
   @Test public void getsAtEof() throws Exception {
@@ -70,6 +73,15 @@ public class RackInputTest {
     assertThat(full.read(4)).isEqualTo(copyOfRange(BYTES, 4, 8));
   }
 
+  @Test public void readFromSlowStreamWithLength() throws Exception {
+    assertThat(fullSlow.read(4)).isEqualTo(copyOfRange(BYTES, 0, 4));
+  }
+
+  @Test public void readFromSlowStreamWithLengthAgain() throws Exception {
+    fullSlow.read(4);
+    assertThat(fullSlow.read(4)).isEqualTo(copyOfRange(BYTES, 4, 8));
+  }
+
   @Test public void readWithLengthTooLong() throws Exception {
     assertThat(full.read(BYTES.length + 1)).isEqualTo(BYTES);
   }
@@ -111,5 +123,9 @@ public class RackInputTest {
 
   private RackInput rackInputFor(byte[] bytes) throws Exception {
     return new RackInput(new ByteArrayInputStream(bytes));
+  }
+
+  private RackInput slowRackInputFor(byte[] bytes) throws Exception {
+    return new RackInput(new SlowByteArrayInputStream(bytes));
   }
 }
