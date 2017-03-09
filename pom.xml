@@ -4,7 +4,7 @@
   <groupId>com.squareup.rack</groupId>
   <artifactId>rack-servlet-parent</artifactId>
   <packaging>pom</packaging>
-  <version>1.8-SNAPSHOT</version>
+  <version>1.8</version>
   <name>Rack Servlet (Parent)</name>
   <description>A JRuby servlet for Rack applications.</description>
   <url>https://github.com/square/rack-servlet</url>
@@ -36,7 +36,7 @@
     <url>http://github.com/square/rack-servlet</url>
     <connection>scm:git:git://github.com/square/rack-servlet.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/square/rack-servlet.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>rack-servlet-parent-1.8</tag>
   </scm>
 
   <issueManagement>
