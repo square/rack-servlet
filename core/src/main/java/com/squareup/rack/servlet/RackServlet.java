@@ -61,6 +61,10 @@ public class RackServlet extends HttpServlet {
     this.rackResponsePropagator = rackResponsePropagator;
   }
 
+  @Override public void init() throws ServletException {
+    this.rackApplication.setup(getServletContext());
+  }
+
   @Override protected void service(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
     RackEnvironment rackEnvironment = rackEnvironmentBuilder.build(request);

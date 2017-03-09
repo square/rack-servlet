@@ -52,6 +52,8 @@ In Depth
   your logging backend][slf4j-backend]. Log messages are written to
   `com.squareup.rack.RackLogger` and `com.squareup.rack.RackErrors`,
   respectively.
+- **ServletContext**: You can use the global variable `$servlet_context` to access
+  the current context.
 
 Support
 -------

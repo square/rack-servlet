@@ -26,7 +26,10 @@ import org.jruby.Ruby;
 import org.jruby.RubyArray;
 import org.jruby.RubyHash;
 import org.jruby.internal.runtime.ThreadService;
+import org.jruby.javasupport.JavaUtil;
 import org.jruby.runtime.builtin.IRubyObject;
+
+import javax.servlet.ServletContext;
 
 import static org.jruby.RubyHash.newHash;
 
@@ -52,6 +55,17 @@ public class JRubyRackApplication implements RackApplication {
     this.application = application;
     this.runtime = application.getRuntime();
     this.threadService = runtime.getThreadService();
+  }
+
+  /**
+   * Sets the $servlet_context global variable in the applications runtime
+   *
+   * @param servletContext the ServletContext to set
+   */
+  public void setup(ServletContext servletContext) {
+    final Ruby runtime = application.getRuntime();
+    IRubyObject rubyContext = JavaUtil.convertJavaToRuby(runtime, servletContext);
+    runtime.getGlobalVariables().set("$servlet_context", rubyContext);
   }
 
   /**
