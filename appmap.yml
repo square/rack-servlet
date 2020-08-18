@@ -1,0 +1,3 @@
+name: rack-servlet
+packages:
+  - path: com.squareup.rack

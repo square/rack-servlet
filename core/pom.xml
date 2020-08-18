@@ -53,4 +53,15 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>**/*RackServletTest.java</excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
