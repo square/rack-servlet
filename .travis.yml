@@ -9,7 +9,4 @@ jdk:
 import: land-of-apps/land-of-apps:travis/java-imports.yml
 
 script:
-  - travis_wait wget -c https://archive.apache.org/dist/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.zip
-  - travis_wait yes | unzip apache-maven-3.1.1-bin.zip
-  - travis_wait export M2_HOME=apache-maven-3.1.1
   - travis_wait mvn -DargLine="-Dappmap.config.file=$PWD/appmap.yml -Dappmap.debug=true -javaagent:$PWD/appmap.jar -Dappmap.output.directory=$PWD/tmp/appmap" test
